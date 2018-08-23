@@ -22,7 +22,7 @@ from django.views.static import serve
 from rest_framework.documentation import include_docs_urls
 
 from goods.views import GoodsListViewSet, CategoryListViewSet
-from users.views import SmsViewSet
+from users.views import SmsViewSet, UserRegViewSet
 
 # 五阶 viewSet 配置路由
 # goods_list = GoodsListViewSet.as_view({
@@ -41,7 +41,8 @@ from rest_framework_jwt.views import obtain_jwt_token
 router = DefaultRouter()
 router.register(r'goods', GoodsListViewSet, base_name="goods_list")
 router.register(r'categorys', CategoryListViewSet, base_name="categorys")
-router.register(r'codes',SmsViewSet,base_name="codes")
+router.register(r'codes', SmsViewSet, base_name="codes")
+router.register(r'users', UserRegViewSet, base_name="users")
 
 print(router.urls)
 # 配置单条信息获取

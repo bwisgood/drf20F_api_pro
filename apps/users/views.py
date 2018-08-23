@@ -10,7 +10,7 @@ from rest_framework import status
 
 from apps.utils.sms_code import YunPian
 from imooc_drf.settings import APIKEY
-from .serializers import SmsSerializer
+from .serializers import SmsSerializer, UserRegSerializer
 from users.models import VerifyCode
 
 User = get_user_model()
@@ -73,3 +73,10 @@ class SmsViewSet(CreateModelMixin, GenericViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class UserRegViewSet(CreateModelMixin, GenericViewSet):
+    """
+    用户注册
+    """
+    serializer_class = UserRegSerializer
