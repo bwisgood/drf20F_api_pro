@@ -27,3 +27,4 @@ class SmsViewSet(CreateModelMixin, GenericViewSet):
     """
     发送短信接口
     """
+    pass
