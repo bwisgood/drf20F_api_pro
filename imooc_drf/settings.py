@@ -187,3 +187,6 @@ JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
 }
+
+# 手机号正则
+REGEX_MOBILE = '^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$'
