@@ -1,0 +1,16 @@
+language: python
+ 
+python:
+    - "3.5"
+    - "3.5-dev"
+env:
+    - DJANGO=1.11.1
+install:
+    - pip install -r requirements.txt --use-mirrors
+script:
+    - python manage.py test
+notifications:
+    recipients:
+        - bwisgood@163.com
+    on_success: change
+    on_failure: always
