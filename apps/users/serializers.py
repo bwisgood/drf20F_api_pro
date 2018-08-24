@@ -2,9 +2,10 @@ import re
 import datetime
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from django.contrib.auth import get_user_model
-from imooc_drf.settings import REGEX_MOBILE
 
+from imooc_drf.settings import REGEX_MOBILE
 from users.models import VerifyCode, UserProfile
 
 User = get_user_model()
@@ -40,10 +41,16 @@ class SmsSerializer(serializers.Serializer):
 
 
 class UserRegSerializer(serializers.ModelSerializer):
-    code = serializers.CharField(required=True, max_length=4, min_length=4, help_text="请输入验证码")
+    # write_only 不需要再被序列化返回
+    code = serializers.CharField(required=True, max_length=4, min_length=4, help_text="请输入验证码", write_only=True)
 
+    username = serializers.CharField(required=True, allow_blank=False,
+                                     validators=[UniqueValidator(queryset=User.objects.all(), message="用户已存在")])
+    # write_only 不需要再被序列化返回
+    # 在drf browser中以密文方式展示 style
+    password = serializers.CharField(required=True, write_only=True, style={"input_type":"password"})
     def validate_code(self, code):
-        code_record = VerifyCode.objects.filter(mobile=self.initial_data["mobile"]).order_by("-add_time")
+        code_record = VerifyCode.objects.filter(mobile=self.initial_data["username"]).order_by("-add_time")
         if code_record:
             code_record = code_record[0]
             five_minute_time = datetime.datetime.now() - datetime.timedelta(minutes=5)
@@ -56,6 +63,9 @@ class UserRegSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("未发送验证码")
             # 之所以不return 是因为我们保存用户时不需要将code保存到User中，User中也没有code字段
             # 只是用来做一个code的校验
+
+        # 最后一定要返回这个code
+        return code
 
     def validate(self, attrs):
         """
@@ -70,6 +80,12 @@ class UserRegSerializer(serializers.ModelSerializer):
             del attrs["code"]
         return attrs
 
+    # 因为密码在数据库中没有被加密 所以需要重写create方法
+    def create(self, validated_data):
+        user = super(UserRegSerializer, self).create(validated_data=validated_data)
+        user.set_password(validated_data["password"])
+        user.save()
+        return user
     class Meta:
         model = UserProfile
-        fields = ("username", "code", "mobile")
+        fields = ("username", "code", "mobile", 'password')

@@ -47,6 +47,7 @@ class SmsViewSet(CreateModelMixin, GenericViewSet):
         random_str = []
         for i in range(4):
             random_str.append(choice(seeds))
+        print("".join(random_str))
         return "".join(random_str)
 
     def create(self, request, *args, **kwargs):
@@ -80,3 +81,4 @@ class UserRegViewSet(CreateModelMixin, GenericViewSet):
     用户注册
     """
     serializer_class = UserRegSerializer
+    queryset = User.objects.all()
