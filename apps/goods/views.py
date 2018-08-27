@@ -14,6 +14,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 # 配置单独的认证
 from rest_framework.authentication import TokenAuthentication
+# todo 配置jwt单独的认证
 
 from .serializers import GoodsSerializer, CategorySerializer
 from .models import Goods, GoodsCategory

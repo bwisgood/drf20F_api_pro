@@ -28,7 +28,7 @@ SECRET_KEY = '&()15p!9=o5hq0-ox&k^^72z584qdf4u2-)+qfb!gz-2@h-o=q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -154,6 +154,7 @@ MEDIA_URL = "/media/"
 # 配置django的token登录，前连个是默认的
 REST_FRAMEWORK = {
     # 使用jwt认证
+    # 取消全局jwt认证
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),

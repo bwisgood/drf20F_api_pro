@@ -81,11 +81,11 @@ class UserRegSerializer(serializers.ModelSerializer):
         return attrs
 
     # 因为密码在数据库中没有被加密 所以需要重写create方法
-    def create(self, validated_data):
-        user = super(UserRegSerializer, self).create(validated_data=validated_data)
-        user.set_password(validated_data["password"])
-        user.save()
-        return user
+    # def create(self, validated_data):
+    #     user = super(UserRegSerializer, self).create(validated_data=validated_data)
+    #     user.set_password(validated_data["password"])
+    #     user.save()
+    #     return user
     class Meta:
         model = UserProfile
         fields = ("username", "code", "mobile", 'password')
