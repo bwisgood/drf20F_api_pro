@@ -29,7 +29,7 @@ class GoodsFilter(django_filters.rest_framework.FilterSet):
     class Meta:
         model = Goods
         # 将字段加入fields
-        fields = ['pricemin', 'pricemax', 'top_category']
+        fields = ['pricemin', 'pricemax', 'top_category', 'is_hot']
 
 
 class CategoryFilter(django_filters.rest_framework.FilterSet):

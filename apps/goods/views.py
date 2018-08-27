@@ -28,7 +28,7 @@ class GoodsPagination(PageNumberPagination):
     page_query_param = 'page'
 
 
-class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class GoodsListViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Goods.objects.all()
     # queryset = Goods.objects.all().filter(category__parent_category__parent_category_id=1)
     serializer_class = GoodsSerializer
