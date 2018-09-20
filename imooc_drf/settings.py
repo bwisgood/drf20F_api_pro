@@ -155,9 +155,9 @@ MEDIA_URL = "/media/"
 REST_FRAMEWORK = {
     # 使用jwt认证
     # 取消全局jwt认证
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 使用jwt认证
         # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',

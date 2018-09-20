@@ -40,6 +40,12 @@ class SmsSerializer(serializers.Serializer):
         return mobile
 
 
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ("name", "birthday", "gender", 'mobile', 'email')
+
+
 class UserRegSerializer(serializers.ModelSerializer):
     # write_only 不需要再被序列化返回
     code = serializers.CharField(required=True, max_length=4, min_length=4, help_text="请输入验证码", write_only=True)
@@ -48,7 +54,8 @@ class UserRegSerializer(serializers.ModelSerializer):
                                      validators=[UniqueValidator(queryset=User.objects.all(), message="用户已存在")])
     # write_only 不需要再被序列化返回
     # 在drf browser中以密文方式展示 style
-    password = serializers.CharField(required=True, write_only=True, style={"input_type":"password"})
+    password = serializers.CharField(required=True, write_only=True, style={"input_type": "password"})
+
     def validate_code(self, code):
         code_record = VerifyCode.objects.filter(mobile=self.initial_data["username"]).order_by("-add_time")
         if code_record:
