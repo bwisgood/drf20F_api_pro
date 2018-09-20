@@ -46,7 +46,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
         fields = ("name", "birthday", "gender", 'mobile', 'email')
 
 
-class UserRegSerializer(serializers.ModelSerializer):
+class UserRegSerializer(serializers.Serializer):
     # write_only 不需要再被序列化返回
     code = serializers.CharField(required=True, max_length=4, min_length=4, help_text="请输入验证码", write_only=True)
 
