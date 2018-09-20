@@ -3,7 +3,7 @@ from random import choice
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
-from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 from rest_framework import status
@@ -80,7 +80,7 @@ class SmsViewSet(CreateModelMixin, GenericViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class UserRegViewSet(CreateModelMixin, RetrieveModelMixin, GenericViewSet):
+class UserRegViewSet(CreateModelMixin, UpdateModelMixin, RetrieveModelMixin, GenericViewSet):
     """
     用户注册
     """
