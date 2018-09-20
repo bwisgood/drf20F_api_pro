@@ -23,7 +23,7 @@ from rest_framework.documentation import include_docs_urls
 
 from goods.views import GoodsListViewSet, CategoryListViewSet
 from users.views import SmsViewSet, UserRegViewSet
-from user_operation.views import UserFavViewSet
+from user_operation.views import UserFavViewSet, UserLeavingMessageViewSet
 # 五阶 viewSet 配置路由
 # goods_list = GoodsListViewSet.as_view({
 #     'get': 'list',
@@ -44,6 +44,7 @@ router.register(r'categorys', CategoryListViewSet, base_name="categorys")
 router.register(r'codes', SmsViewSet, base_name="codes")
 router.register(r'users', UserRegViewSet, base_name="users")
 router.register(r'userfavs', UserFavViewSet, base_name="userfavs")
+router.register(r'messages', UserLeavingMessageViewSet, base_name="messages")
 
 print(router.urls)
 # 配置单条信息获取
