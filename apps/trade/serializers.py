@@ -1,6 +1,8 @@
+import time
+
 from rest_framework import serializers
 
-from trade.models import ShoppingCart
+from trade.models import ShoppingCart, OrderInfo, OrderGoods
 from goods.models import Goods
 from goods.serializers import GoodsSerializer
 
@@ -45,3 +47,23 @@ class ShopCartSerializer(serializers.Serializer):
         instance.nums = nums
         instance.save()
         return instance
+
+
+class OrderInfoSerializer(serializers.ModelSerializer):
+    def generate_order_sn(self):
+        from random import Random
+
+        rand = Random()
+        order_sn = "{time}{user_id}{randint}".format(time=str(time.localtime()),
+                                                     user_id=self.context.get("request").user,
+                                                     randint=rand.randint(10, 88))
+
+        return order_sn
+
+    def validate(self, attrs):
+        attrs["order_sn"] = self.generate_order_sn()
+        return attrs
+
+    class Meta:
+        model = OrderInfo
+        fields = "__all__"
