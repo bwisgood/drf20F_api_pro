@@ -49,15 +49,40 @@ class ShopCartSerializer(serializers.Serializer):
         return instance
 
 
+class OrderGoodsSerializer(serializers.ModelSerializer):
+    goods = GoodsSerializer(many=False)
+    class Meta:
+        model = OrderGoods
+        fields = "__all__"
+
+
+class OrderDetailSerializer(serializers.ModelSerializer):
+    goods = OrderGoodsSerializer(many=True)
+
+    class Meta:
+        model = OrderInfo
+        fields = "__all__"
+
+
 class OrderInfoSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
+
+    pay_status = serializers.CharField(read_only=True)
+    trade_no = serializers.IntegerField(read_only=True)
+    order_sn = serializers.IntegerField(read_only=True)
+    pay_time = serializers.DateTimeField(read_only=True)
+    id = serializers.IntegerField(read_only=True)
+
     def generate_order_sn(self):
         from random import Random
 
         rand = Random()
-        order_sn = "{time}{user_id}{randint}".format(time=str(time.localtime()),
-                                                     user_id=self.context.get("request").user,
+        order_sn = "{time}{user_id}{randint}".format(time=str(int(time.time())),
+                                                     user_id=self.context.get("request").user.id,
                                                      randint=rand.randint(10, 88))
-
+        print(order_sn)
         return order_sn
 
     def validate(self, attrs):

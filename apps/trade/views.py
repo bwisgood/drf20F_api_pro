@@ -4,7 +4,8 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from trade.serializers import ShopCartSerializer, ShopCartListDetailSerializer
+from trade.serializers import ShopCartSerializer, ShopCartListDetailSerializer, OrderInfoSerializer, \
+    OrderDetailSerializer
 from .models import ShoppingCart, OrderInfo, OrderGoods
 
 
@@ -31,11 +32,16 @@ class ShopCartViewSet(viewsets.ModelViewSet):
         return ShoppingCart.objects.filter(user=self.request.user)
 
 
-class OrderViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
+class OrderViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
-    # serializer_class = ShopCartSerializer
+    # serializer_class = OrderInfoSerializer
     permission_classes = (IsAuthenticated,)
-    lookup_field = "goods_id"
+    # lookup_field = "goods_id"
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return OrderDetailSerializer
+        return OrderInfoSerializer
 
     def get_queryset(self):
         return OrderInfo.objects.filter(user=self.request.user)
@@ -46,7 +52,7 @@ class OrderViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.Gene
         sc_goods = ShoppingCart.objects.filter(user=self.request.user)
         for sc in sc_goods:
             order_goods = OrderGoods()
-            order_goods.goods = sc
+            order_goods.goods = sc.goods
             order_goods.goods_num = sc.nums
             order_goods.order = order
             order_goods.save()

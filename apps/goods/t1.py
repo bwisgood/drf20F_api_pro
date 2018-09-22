@@ -10,7 +10,6 @@ class A:
 
 
 if __name__ == '__main__':
-    a = A()
-    print(repr(a))
-    print(a.__repr__())
-    print(a)
+    import time
+    t= str(int(time.time()))
+    print(t)
