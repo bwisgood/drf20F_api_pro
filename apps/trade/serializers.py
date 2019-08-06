@@ -51,6 +51,7 @@ class ShopCartSerializer(serializers.Serializer):
 
 class OrderGoodsSerializer(serializers.ModelSerializer):
     goods = GoodsSerializer(many=False)
+
     class Meta:
         model = OrderGoods
         fields = "__all__"
